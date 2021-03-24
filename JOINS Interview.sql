@@ -38,3 +38,23 @@ SELECT students.first_name, students.last_name, students.email, student_grades.t
     JOIN student_grades
     ON students.id = student_grades.student_id
     WHERE grade > 90;
+
+
+/* UNIONS */
+SELECT a.code AS Code, a.name AS Name, COUNT(b.Ncode)
+FROM cdmaster a, nmmaster b
+WHERE a.code = b.code
+    AND a.status = 1
+    AND b.status = 1
+    AND b.Ncode <> 'a10'
+    AND TRUNC(last_updated_date) <= TRUNC(sysdate-13)
+GROUP BY a.code, a.name
+UNION
+SELECT a.code AS Code, a.name AS Name, COUNT(b.Ncode)
+FROM cdmaster a, nmmaster b
+WHERE a.code = b.code
+    AND a.status = 1
+    AND b.status = 1
+    AND b.Ncode <> 'a10'
+    AND TRUNC(last_updated_date) > TRUNC(sysdate-13)
+GROUP BY a.code, a.name;
